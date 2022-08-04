@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node ./bin/www",
     "test:mocha": "mocha test/*.spec.js --timeout 100000 --exit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
