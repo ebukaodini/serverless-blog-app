@@ -1,8 +1,7 @@
-// import moduleAlias from 'module-alias'
 import express, { NextFunction, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
-import ServerlessHttp from 'serverless-http'
+import ServerlessHttp, { Handler } from 'serverless-http'
 import createError from 'http-errors'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
@@ -45,7 +44,7 @@ app.use(function (_req, res, next) {
 app.use((err: any, req: Request, res: Response) => {
   // req.app.get('env') === 'production'
   console.log(err)
-  
+
   return res.error(
     err.status === 500
       ? 'Server Error! Please try again.' : err.message,
@@ -55,4 +54,4 @@ app.use((err: any, req: Request, res: Response) => {
 
 // export default app;
 
-export const handler = ServerlessHttp(app);
+export const handler: Handler = ServerlessHttp(app);
