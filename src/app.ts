@@ -54,4 +54,5 @@ app.use((err: any, req: Request, res: Response) => {
 })
 
 // export default app;
+
 export const handler = ServerlessHttp(app);
