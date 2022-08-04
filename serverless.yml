@@ -1,0 +1,20 @@
+service: serverless-blog-app
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev # Set the default stage used. Default is dev
+  region: us-east-1 # Overwrite the default region used. Default is us-east-1
+  profile: production # The default profile to use with this service
+  memorySize: 512 # Overwrite the default memory size. Default is 1024
+  environment:
+    APP_KEY: APP_KEY_12345
+
+functions:
+  auth:
+    handler: build.app.handler
+    events:
+      - httpApi: '*'
+
+plugins:
+  - serverless-plugin-typescript
