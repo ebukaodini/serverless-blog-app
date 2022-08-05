@@ -1,0 +1,72 @@
+# Action runs jobs automatically when the events defined below are triggered by github.
+
+# This action deploys the app to AWS serverless when there's a push to the main branch
+name: Deploy App on Serverless
+
+on:
+  # The jobs defined below would be triggered everytime there is a pull request on this repository
+  push:
+    branches:
+      - main
+
+jobs:
+  # This job deploys the application on aws serverless
+  deploy:
+    # It runs on the latest version of ubuntu
+    runs-on: ubuntu-latest
+
+    # The strategy for runnig these tests
+    strategy:
+      # Use matrix to define variations for each job
+      matrix:
+        node-version: [16.x]
+
+    # These are the steps for the job
+    steps:
+      # this step uses the checkout action to checkout the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # fetch-depth defines the number of commits to fetch.
+          # 0 indicates all history for all branches and tags.
+          fetch-depth: 0
+      # Setup node
+      - name: Setup Node.js v-${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+      # # Configure AWS Credentials for serverless deploy
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      # Build package
+      - name: Build package
+        run: npm run build
+      # Run tests
+      - name: Run tests
+        run: npm run test
+      # Configure aws profile
+      - name: Configure aws profile
+        uses: serverless/github-action@v3.1
+        with:
+          args: config credentials -n default -p aws -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # Deploys the app on serverless
+      - name: Serverless deploy
+        uses: serverless/github-action@v3.1
+        with:
+          args: deploy --verbose
+        env:
+          # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+          # or if using AWS creds directly
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          MONGODB_CONNECTION_URL: ${{ secrets.MONGODB_CONNECTION_URL }}

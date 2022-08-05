@@ -8,7 +8,13 @@
     "baseUrl": "./src",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": false
+    "forceConsistentCasingInFileNames": false,
+    "typeRoots": [
+      "./src/types"
+    ]
   },
-  "exclude": ["tests", "build"]
+  "exclude": [
+    "tests",
+    "build"
+  ]
 }
