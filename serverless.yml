@@ -1,5 +1,5 @@
 service: serverless-blog-app
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -9,13 +9,12 @@ provider:
   profile: default # serverless-blog-app # The default profile to use with this service
   memorySize: 512 # Overwrite the default memory size. Default is 1024
   # environment:
-  #   APP_KEY: APP_KEY_12345
 
 functions:
   api:
     handler: src/app.handler
     events:
-      - httpApi: '*'
+      - httpApi: "*"
 
 plugins:
   - serverless-plugin-typescript

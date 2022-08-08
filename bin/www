@@ -8,6 +8,8 @@ const app = require('../build/app').default;
 const debug = require('debug')('serverless-blog-app:server');
 const http = require('http');
 
+// console.log(app)
+
 /**
  * Get port from environment and store in Express.
  */
