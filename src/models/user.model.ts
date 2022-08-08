@@ -9,7 +9,7 @@ export interface UserInterface extends Document {
   dateCreated: Date
 }
 
-export interface UserModel extends Model<UserInterface> {
+interface UserModel extends Model<UserInterface> {
   _: any
 }
 
